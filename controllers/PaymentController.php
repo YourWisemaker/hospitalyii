@@ -72,6 +72,42 @@ class PaymentController extends BaseController
     }
 
     /**
+     * Creates a new Payment model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return string|\yii\web\Response
+     */
+    public function actionCreate()
+    {
+        $model = new Payment();
+        $model->payment_date = date('Y-m-d');
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Pembayaran berhasil dibuat.');
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        // Get list of medical records that need payment
+        $medicalRecords = MedicalRecord::find()
+            ->where(['status' => MedicalRecord::STATUS_ONGOING])
+            ->orWhere(['status' => MedicalRecord::STATUS_WAITING_PAYMENT])
+            ->with('patient')
+            ->orderBy(['treatment_date' => SORT_DESC])
+            ->all();
+            
+        $medicalRecordOptions = [];
+        foreach ($medicalRecords as $record) {
+            $patientName = $record->patient ? $record->patient->name : 'Unknown';
+            $medicalRecordOptions[$record->id] = "#{$record->id} - {$patientName} - " . Yii::$app->formatter->asDate($record->treatment_date);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+            'medicalRecordOptions' => $medicalRecordOptions,
+            'paymentMethods' => Payment::getPaymentMethodOptions(),
+        ]);
+    }
+
+    /**
      * Updates an existing Payment model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
@@ -157,6 +193,7 @@ class PaymentController extends BaseController
         $paymentsByMethod = ArrayHelper::map(
             $query->select(['payment_method', 'total' => 'SUM(amount)'])
                  ->groupBy('payment_method')
+                 ->orderBy(['payment_method' => SORT_ASC])
                  ->asArray()
                  ->all(),
             'payment_method',

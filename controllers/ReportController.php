@@ -216,7 +216,9 @@ class ReportController extends \app\controllers\base\BaseController
         $revenueByMethod = Payment::find()
             ->select(['payment_method', 'SUM(amount) as total'])
             ->where(['between', 'payment_date', $startDate, $endDate . ' 23:59:59'])
+            ->andWhere(['status' => Payment::STATUS_PAID])
             ->groupBy(['payment_method'])
+            ->orderBy(['payment_method' => SORT_ASC])
             ->asArray()
             ->all();
         

@@ -3,6 +3,9 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
+// Include bootstrap file for compatibility functions
+require __DIR__ . '/bootstrap.php';
+
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),

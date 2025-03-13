@@ -14,6 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+        <?= Html::a('Tambah Pembayaran', ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Lihat Laporan Pembayaran', ['report'], ['class' => 'btn btn-info']) ?>
     </p>
 
@@ -64,10 +65,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row">
                     <div class="col-md-12 text-right">
                         <button type="submit" class="btn btn-primary">
-                            <i class="glyphicon glyphicon-search"></i> Filter
+                            <i class="fa fa-search"></i> Filter
                         </button>
                         <a href="<?= \yii\helpers\Url::to(['index']) ?>" class="btn btn-default">
-                            <i class="glyphicon glyphicon-refresh"></i> Reset
+                            <i class="fa fa-refresh"></i> Reset
                         </a>
                     </div>
                 </div>
@@ -125,17 +126,42 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {print}',
+                'header' => 'Aksi',
+                'headerOptions' => ['style' => 'width: 200px; text-align: center;'],
+                'contentOptions' => ['style' => 'text-align: center; white-space: nowrap;'],
+                'template' => '{view} {update} {delete} {print}',
                 'buttons' => [
                     'view' => function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                        return Html::a('<i class="fa fa-eye"></i>', $url, [
                             'title' => 'Lihat',
+                            'class' => 'btn btn-sm btn-info',
+                            'style' => 'margin: 2px;',
+                            'data-pjax' => '0',
+                        ]);
+                    },
+                    'update' => function ($url, $model) {
+                        return Html::a('<i class="fa fa-pencil"></i>', $url, [
+                            'title' => 'Ubah',
+                            'class' => 'btn btn-sm btn-warning',
+                            'style' => 'margin: 2px;',
+                            'data-pjax' => '0',
+                        ]);
+                    },
+                    'delete' => function ($url, $model) {
+                        return Html::a('<i class="fa fa-trash"></i>', $url, [
+                            'title' => 'Hapus',
+                            'class' => 'btn btn-sm btn-danger',
+                            'style' => 'margin: 2px;',
+                            'data-confirm' => 'Apakah Anda yakin ingin menghapus pembayaran ini?',
+                            'data-method' => 'post',
                             'data-pjax' => '0',
                         ]);
                     },
                     'print' => function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-print"></span>', ['print', 'id' => $model->id], [
+                        return Html::a('<i class="fa fa-print"></i>', ['print', 'id' => $model->id], [
                             'title' => 'Cetak Kwitansi',
+                            'class' => 'btn btn-sm btn-primary',
+                            'style' => 'margin: 2px;',
                             'target' => '_blank',
                             'data-pjax' => '0',
                         ]);

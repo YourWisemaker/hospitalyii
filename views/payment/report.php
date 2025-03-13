@@ -147,24 +147,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     <h3 class="panel-title">Pembayaran Berdasarkan Metode</h3>
                 </div>
                 <div class="panel-body">
-                    <?= ChartJs::widget([
+                    <?= \dosamigos\chartjs\ChartJs::widget([
                         'type' => 'pie',
                         'options' => [
-                            'height' => 250,
-                            'width' => 500
+                            'height' => 200,
+                            'width' => 400,
                         ],
                         'data' => [
                             'labels' => array_keys($paymentMethodData),
                             'datasets' => [
                                 [
                                     'data' => array_values($paymentMethodData),
-                                    'backgroundColor' => [
-                                        "#36a2eb",
-                                        "#ff6384",
-                                        "#4bc0c0",
-                                        "#ff9f40",
-                                        "#9966ff"
-                                    ]
+                                    'backgroundColor' => ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
                                 ]
                             ]
                         ],
@@ -189,7 +183,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         }
                                     ')
                                 ]
-                            }
+                            ]
                         ]
                     ]); ?>
                 </div>

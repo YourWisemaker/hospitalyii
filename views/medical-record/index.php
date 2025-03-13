@@ -60,19 +60,26 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
+                'header' => 'Aksi',
+                'headerOptions' => ['style' => 'width: 180px; text-align: center;'],
+                'contentOptions' => ['style' => 'text-align: center; white-space: nowrap;'],
                 'template' => '{view} {update} {delete}',
                 'buttons' => [
                     'view' => function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                        return Html::a('<i class="fa fa-eye"></i>', $url, [
                             'title' => 'Lihat',
+                            'class' => 'btn btn-sm btn-info',
+                            'style' => 'margin: 2px;',
                             'data-pjax' => '0',
                         ]);
                     },
                     'update' => function ($url, $model) {
                         // Only allow updating records that are not completed
                         return $model->status !== \app\models\MedicalRecord::STATUS_COMPLETED
-                            ? Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                            ? Html::a('<i class="fa fa-pencil"></i>', $url, [
                                 'title' => 'Ubah',
+                                'class' => 'btn btn-sm btn-warning',
+                                'style' => 'margin: 2px;',
                                 'data-pjax' => '0',
                             ])
                             : '';
@@ -80,8 +87,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'delete' => function ($url, $model) {
                         // Only allow deleting records that are not completed
                         return $model->status !== \app\models\MedicalRecord::STATUS_COMPLETED
-                            ? Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                            ? Html::a('<i class="fa fa-trash"></i>', $url, [
                                 'title' => 'Hapus',
+                                'class' => 'btn btn-sm btn-danger',
+                                'style' => 'margin: 2px;',
                                 'data-confirm' => 'Apakah Anda yakin ingin menghapus rekam medis ini?',
                                 'data-method' => 'post',
                                 'data-pjax' => '0',

@@ -32,60 +32,48 @@ $this->params['breadcrumbs'][] = $this->title;
             <h3 class="panel-title">Detail Tindakan</h3>
         </div>
         <div class="panel-body">
-            <?= DetailView::widget([
-                'model' => $model,
-                'attributes' => [
-                    'id',
-                    'code',
-                    'name',
-                    [
-                        'attribute' => 'category',
-                        'value' => function ($model) {
-                            return $model->getCategoryLabel();
-                        },
-                    ],
-                    [
-                        'attribute' => 'price',
-                        'value' => function ($model) {
-                            return 'Rp. ' . Yii::$app->formatter->asDecimal($model->price, 0);
-                        },
-                    ],
-                    [
-                        'attribute' => 'status',
-                        'value' => function ($model) {
-                            return $model->status ? 'Aktif' : 'Tidak Aktif';
-                        },
-                        'contentOptions' => function ($model) {
-                            return $model->status ? ['class' => 'success'] : ['class' => 'danger'];
-                        },
-                    ],
-                    'description:ntext',
-                    [
-                        'attribute' => 'created_at',
-                        'value' => function ($model) {
-                            return Yii::$app->formatter->asDatetime($model->created_at);
-                        },
-                    ],
-                    [
-                        'attribute' => 'updated_at',
-                        'value' => function ($model) {
-                            return Yii::$app->formatter->asDatetime($model->updated_at);
-                        },
-                    ],
-                    [
-                        'attribute' => 'created_by',
-                        'value' => function ($model) {
-                            return $model->createdBy ? $model->createdBy->username : '-';
-                        },
-                    ],
-                    [
-                        'attribute' => 'updated_by',
-                        'value' => function ($model) {
-                            return $model->updatedBy ? $model->updatedBy->username : '-';
-                        },
-                    ],
+            <?php
+            $attributes = [
+                'id',
+                'code',
+                'name',
+                [
+                    'attribute' => 'category',
+                    'value' => $model->getCategoryLabel(),
                 ],
-            ]) ?>
+                [
+                    'attribute' => 'price',
+                    'value' => 'Rp. ' . Yii::$app->formatter->asDecimal($model->price, 0),
+                ],
+                [
+                    'attribute' => 'status',
+                    'value' => $model->status ? 'Aktif' : 'Tidak Aktif',
+                    'contentOptions' => $model->status ? ['class' => 'success'] : ['class' => 'danger'],
+                ],
+                'description:ntext',
+                [
+                    'attribute' => 'created_at',
+                    'value' => Yii::$app->formatter->asDatetime($model->created_at),
+                ],
+                [
+                    'attribute' => 'updated_at',
+                    'value' => Yii::$app->formatter->asDatetime($model->updated_at),
+                ],
+                [
+                    'attribute' => 'created_by',
+                    'value' => $model->createdBy ? $model->createdBy->username : '-',
+                ],
+                [
+                    'attribute' => 'updated_by',
+                    'value' => $model->updatedBy ? $model->updatedBy->username : '-',
+                ],
+            ];
+            
+            echo DetailView::widget([
+                'model' => $model,
+                'attributes' => $attributes,
+            ]);
+            ?>
         </div>
     </div>
 

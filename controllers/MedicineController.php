@@ -82,9 +82,15 @@ class MedicineController extends BaseController
         $model = new Medicine();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                Yii::$app->session->setFlash('success', 'Obat berhasil ditambahkan.');
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Obat berhasil ditambahkan.');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    // Log validation errors
+                    Yii::error('Validation errors: ' . print_r($model->errors, true), 'app\controllers\MedicineController');
+                    Yii::$app->session->setFlash('error', 'Gagal menyimpan obat. Silakan periksa kembali data yang dimasukkan.');
+                }
             }
         } else {
             $model->loadDefaultValues();
@@ -106,9 +112,17 @@ class MedicineController extends BaseController
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Obat berhasil diperbarui.');
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Obat berhasil diperbarui.');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    // Log validation errors
+                    Yii::error('Validation errors: ' . print_r($model->errors, true), 'app\controllers\MedicineController');
+                    Yii::$app->session->setFlash('error', 'Gagal memperbarui obat. Silakan periksa kembali data yang dimasukkan.');
+                }
+            }
         }
 
         return $this->render('update', [

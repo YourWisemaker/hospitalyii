@@ -14,24 +14,36 @@ use yii\widgets\ActiveForm;
 
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'code')->textInput([
+                'maxlength' => true,
+                'placeholder' => 'Contoh: MED001',
+                'aria-describedby' => 'codeHelpBlock'
+            ])->hint('Kode obat harus unik dan tidak boleh sama dengan kode obat lainnya.', ['id' => 'codeHelpBlock']) ?>
 
-            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'name')->textInput([
+                'maxlength' => true,
+                'placeholder' => 'Masukkan nama obat',
+                'aria-describedby' => 'nameHelpBlock'
+            ])->hint('Nama obat harus unik dan tidak boleh sama dengan nama obat lainnya.', ['id' => 'nameHelpBlock']) ?>
 
             <?= $form->field($model, 'category')->dropDownList($model->getCategoryOptions(), [
                 'prompt' => '-- Pilih Kategori --',
             ]) ?>
 
-            <?= $form->field($model, 'unit')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'unit')->textInput(['maxlength' => true, 'placeholder' => 'Contoh: Tablet, Botol, Pcs']) ?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'purchase_price')->textInput(['type' => 'number']) ?>
+            <?= $form->field($model, 'purchase_price')->textInput(['type' => 'number', 'min' => 0, 'step' => '0.01']) ?>
 
-            <?= $form->field($model, 'sell_price')->textInput(['type' => 'number']) ?>
+            <?= $form->field($model, 'price')->textInput(['type' => 'number', 'min' => 0, 'step' => '0.01']) ?>
+
+            <?= $form->field($model, 'sell_price')->textInput(['type' => 'number', 'min' => 0, 'step' => '0.01']) ?>
 
             <?= $form->field($model, 'stock')->textInput(['type' => 'number', 'min' => 0]) ?>
 
             <?= $form->field($model, 'min_stock')->textInput(['type' => 'number', 'min' => 0]) ?>
+            
+            <?= $form->field($model, 'status')->dropDownList($model->getStatusOptions()) ?>
         </div>
     </div>
 

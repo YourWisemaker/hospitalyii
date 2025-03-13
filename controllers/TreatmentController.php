@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use app\controllers\base\BaseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
+use app\helpers\CountHelper;
 
 /**
  * TreatmentController implements the CRUD actions for Treatment model.
@@ -82,9 +83,15 @@ class TreatmentController extends BaseController
         $model = new Treatment();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                Yii::$app->session->setFlash('success', 'Tindakan berhasil ditambahkan.');
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Tindakan berhasil ditambahkan.');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    // Log validation errors
+                    Yii::error('Validation errors: ' . print_r($model->errors, true), 'app\controllers\TreatmentController');
+                    Yii::$app->session->setFlash('error', 'Gagal menyimpan tindakan. Silakan periksa kembali data yang dimasukkan.');
+                }
             }
         } else {
             $model->loadDefaultValues();
@@ -106,9 +113,17 @@ class TreatmentController extends BaseController
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Tindakan berhasil diperbarui.');
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Tindakan berhasil diperbarui.');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    // Log validation errors
+                    Yii::error('Validation errors: ' . print_r($model->errors, true), 'app\controllers\TreatmentController');
+                    Yii::$app->session->setFlash('error', 'Gagal memperbarui tindakan. Silakan periksa kembali data yang dimasukkan.');
+                }
+            }
         }
 
         return $this->render('update', [

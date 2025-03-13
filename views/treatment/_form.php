@@ -14,9 +14,17 @@ use yii\widgets\ActiveForm;
 
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'code')->textInput([
+                'maxlength' => true, 
+                'placeholder' => 'Contoh: TDK001',
+                'aria-describedby' => 'codeHelpBlock'
+            ])->hint('Kode tindakan harus unik dan tidak boleh sama dengan kode tindakan lainnya.', ['id' => 'codeHelpBlock']) ?>
 
-            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'name')->textInput([
+                'maxlength' => true,
+                'placeholder' => 'Masukkan nama tindakan',
+                'aria-describedby' => 'nameHelpBlock'
+            ])->hint('Nama tindakan harus unik dan tidak boleh sama dengan nama tindakan lainnya.', ['id' => 'nameHelpBlock']) ?>
 
             <?= $form->field($model, 'category')->dropDownList($model->getCategoryOptions(), [
                 'prompt' => '-- Pilih Kategori --',

@@ -24,6 +24,7 @@ use app\models\base\BaseModel;
 class Payment extends BaseModel
 {
     const STATUS_PENDING = 'pending';
+    const STATUS_PARTIAL = 'partial';
     const STATUS_PAID = 'paid';
     
     const METHOD_CASH = 'cash';
@@ -49,9 +50,9 @@ class Payment extends BaseModel
             [['medical_record_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['amount'], 'number'],
             [['payment_date'], 'safe'],
-            [['status'], 'string'],
+            [['status'], 'string', 'max' => 50],
             [['status'], 'default', 'value' => self::STATUS_PENDING],
-            [['status'], 'in', 'range' => [self::STATUS_PENDING, self::STATUS_PAID]],
+            [['status'], 'in', 'range' => [self::STATUS_PENDING, self::STATUS_PARTIAL, self::STATUS_PAID]],
             [['payment_method'], 'string', 'max' => 50],
             [['medical_record_id'], 'exist', 'skipOnError' => true, 'targetClass' => MedicalRecord::class, 'targetAttribute' => ['medical_record_id' => 'id']],
         ];
@@ -93,6 +94,7 @@ class Payment extends BaseModel
     {
         $labels = [
             self::STATUS_PENDING => 'Belum Lunas',
+            self::STATUS_PARTIAL => 'Lunas Sebagian',
             self::STATUS_PAID => 'Lunas',
         ];
         
